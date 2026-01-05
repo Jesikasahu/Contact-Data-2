@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        input.invalid,
+        textarea.invalid {
+            border-color: #e74c3c;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #2ecc71;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p class="subtitle">We'd love to hear from you. Fill out the form below!</p>
+        
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="Name">Full Name *</label>
+                <input type="text" id="Name" name="Name" placeholder="Enter your full name">
+                <div class="error" id="nameError">Please enter your name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email Address *</label>
+                <input type="Email" id="Email" name="Email" placeholder="your.email@example.com">
+                <div class="error" id="emailError">Please enter a valid email</div>
+            </div>
+
+            <div class="form-group">
+                <label for="Phone">Phone Number *</label>
+                <input type="tel" id="Phone" name="Phone" placeholder="(123) 456-7890">
+                <div class="error" id="phoneError">Please enter a valid phone number</div>
+            </div>
+
+            <div class="form-group">
+                <label for="Address">Street Address *</label>
+                <textarea id="Address" name="Address" placeholder="Enter your street address"></textarea>
+                <div class="error" id="addressError">Please enter your address</div>
+            </div>
+
+            <div class="form-group">
+                <label for="City">City *</label>
+                <input type="text" id="City" name="City" placeholder="Enter your city">
+                <div class="error" id="cityError">Please enter your city</div>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            Thank you! Your information has been submitted successfully.
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+
+        // Form validation patterns
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phonePattern = /^[\d\s\-\(\)\+]+$/;
+
+        // Validate individual field
+        function validateField(field) {
+            const value = field.value.trim();
+            const errorElement = document.getElementById(field.id + 'Error');
+            let isValid = true;
+
+            // Remove previous error state
+            field.classList.remove('invalid');
+            errorElement.classList.remove('show');
+
+            // Check if empty
+            if (value === '') {
+                field.classList.add('invalid');
+                errorElement.textContent = 'This field is required';
+                errorElement.classList.add('show');
+                isValid = false;
+            } 
+            // Email specific validation
+            else if (field.id === 'email' && !emailPattern.test(value)) {
+                field.classList.add('invalid');
+                errorElement.textContent = 'Please enter a valid email address';
+                errorElement.classList.add('show');
+                isValid = false;
+            }
+            // Phone specific validation
+            else if (field.id === 'phone' && !phonePattern.test(value)) {
+                field.classList.add('invalid');
+                errorElement.textContent = 'Please enter a valid phone number';
+                errorElement.classList.add('show');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Add real-time validation on blur
+        const fields = ['name', 'email', 'phone', 'address', 'city'];
+        fields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            field.addEventListener('blur', () => validateField(field));
+            
+            // Clear error on input
+            field.addEventListener('input', () => {
+                if (field.classList.contains('invalid')) {
+                    field.classList.remove('invalid');
+                    document.getElementById(field.id + 'Error').classList.remove('show');
+                }
+            });
+        });
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate all fields
+            let isFormValid = true;
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!validateField(field)) {
+                    isFormValid = false;
+                }
+            });
+
+            // If form is valid, collect data and show success
+            if (isFormValid) {
+                const formData = {
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    city: document.getElementById('city').value.trim()
+                };
+
+                // Log data to console (in real app, you'd send this to a server)
+                console.log('Form Data Submitted:', formData);
+
+                // Show success message
+                successMessage.classList.add('show');
+                form.reset();
+
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
